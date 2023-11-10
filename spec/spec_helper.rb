@@ -1,9 +1,9 @@
-require 'pathname'
-require 'active_support/core_ext/module/delegation'
+require "pathname"
+require "active_support/core_ext/module/delegation"
 
 class RootPath
   def pathname
-    Pathname.new File.expand_path(File.join(File.dirname(__FILE__), '..'))
+    Pathname.new File.expand_path(File.join(File.dirname(__FILE__), ".."))
   end
 
   delegate :join, :to_s, to: :pathname
@@ -53,7 +53,7 @@ RSpec.configure do |config|
   # Allows RSpec to persist some state between runs in order to support
   # the `--only-failures` and `--next-failure` CLI options. We recommend
   # you configure your source control system to ignore this file.
-  config.example_status_persistence_file_path = '.rspec_status'
+  config.example_status_persistence_file_path = ".rspec_status"
 
   # Limits the available syntax to the non-monkey patched syntax that is
   # recommended. For more details, see:
