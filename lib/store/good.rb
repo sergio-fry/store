@@ -9,6 +9,5 @@ module Store
     end
 
     def model = @model.gsub(device, "").strip
-    def price = @cost + 3000
   end
 end
