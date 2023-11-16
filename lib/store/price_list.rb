@@ -12,15 +12,12 @@ module Store
       section = nil
 
       @lines.each do |line|
-        next if line.blank?
+        next if line.strip.empty?
 
         section_match = line.match(%r{\s\s\s+[^[:alnum:]]+([[:alnum:]/\s]+)})
         good_match = line.match(%r{([[:alnum:]/\s]+)[^[:alnum:]]+(\d+)})
 
-        if section_match
-          section = section_match[1]
-        end
-
+        section = section_match[1] if section_match
 
         next if good_match.nil?
 
