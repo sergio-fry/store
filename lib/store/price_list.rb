@@ -14,7 +14,7 @@ module Store
       @lines.each do |line|
         next if line.blank?
 
-        section_match = line.match(%r{\s+[^[:alnum:]]+([[:alnum:]/\s]+)})
+        section_match = line.match(%r{\s\s\s+[^[:alnum:]]+([[:alnum:]/\s]+)})
         good_match = line.match(%r{([[:alnum:]/\s]+)[^[:alnum:]]+(\d+)})
 
         if section_match

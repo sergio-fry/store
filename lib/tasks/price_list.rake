@@ -14,11 +14,22 @@ namespace :price_list do
   desc "import price list"
   task import: :environment do
     require "store/price_list"
+    require "store/storage/goods"
 
-    Store::PriceList.new(
-      File.open(Rails.root.join("tmp/price.txt")).read.lines
-    ).uniq { |good| [good.device, good.model] }.each do |good|
-      goods.save(good)
+    Store::Storage::Noco.with_noco(
+      host: ENV.fetch("NOCODB_HOST"),
+      db: ENV.fetch("NOCODB_DB"),
+      auth: ENV.fetch("NOCODB_AUTH_TOKEN")
+    ) do |noco|
+      goods = Store::Storage::Goods.new(
+        noco:
+      )
+
+      Store::PriceList.new(
+        File.open(Rails.root.join("tmp/price.txt")).read.lines
+      ).uniq { |good| [good.device, good.model] }.take(20).each do |good|
+        goods.save(good)
+      end
     end
   end
 end
