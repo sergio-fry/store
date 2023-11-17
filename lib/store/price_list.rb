@@ -17,7 +17,7 @@ module Store
         section_match = line.match(%r{\s\s\s+[^[:alnum:]]+([[:alnum:]/\s]+)})
         section = section_match[1] if section_match
 
-        good_match1 = line.match(%r{([[:alnum:]/\s]+)([^[:alnum:]])-+(\d+)})
+        good_match1 = line.match(%r{([[:alnum:]/\s]+)([^[:alnum:]\s])-+(\d+)})
         good_match2 = line.match(%r{([[:alnum:]/\s]+)-+(\d+)})
 
         good_match = if good_match1
@@ -35,8 +35,9 @@ module Store
 
         next if good_match.nil?
 
+        puts line
         yield Good.new(
-          device: section.strip,
+          device: (section || "").strip,
           model: good_match[:model].strip,
           color: parsed_color(good_match[:color]),
           cost: good_match[:cost].strip.to_i

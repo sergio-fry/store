@@ -31,7 +31,7 @@ namespace :price_list do
       goods.update_all({ in_stock: false })
 
       Store::PriceList.new(
-        File.open(Rails.root.join("tmp/price.txt")).read.lines
+        File.open(Rails.root.join("import/mobilochka.txt")).read.lines
       ).each do |good|
         good.in_stock = true
         goods.save(good)

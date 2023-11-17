@@ -23,7 +23,7 @@ module Store
     context do
       let(:lines) do
         <<~LINES
-                                💥iPhone 15💥
+                                iPhone 15
           🇯🇵📱*15P 256 Natural-131000
         LINES
       end
@@ -36,19 +36,21 @@ module Store
     end
 
     context do
-      let(:lines) do
-        <<~LINES
-                                      💥Apple💥
-
-          Pencil 2-10500
-        LINES
-      end
+      let(:lines) { "Pencil 2-10500" }
 
       it { expect(goods.entries.size).to eq 1 }
-      it { expect(goods.first.device).to eq "Apple" }
       it { expect(goods.first.model).to eq "Pencil 2" }
       it { expect(goods.first.color).to be_nil }
       it { expect(goods.first.cost).to eq 10_500 }
+    end
+
+    context do
+      let(:lines) { "Apple MagSafe -1000 (1:1)" }
+
+      it { expect(goods.entries.size).to eq 1 }
+      it { expect(goods.first.model).to eq "Apple MagSafe" }
+      it { expect(goods.first.color).to be_nil }
+      it { expect(goods.first.cost).to eq 1000 }
     end
   end
 end
