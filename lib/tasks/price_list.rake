@@ -25,7 +25,7 @@ namespace :price_list do
         noco:
       )
 
-      #goods.delete_all
+      goods.delete_all
       goods.update_all(in_stock: false)
 
       Store::PriceList.new(

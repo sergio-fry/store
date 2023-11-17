@@ -31,7 +31,22 @@ module Store
       it { expect(goods.entries.size).to eq 1 }
       it { expect(goods.first.device).to eq "iPhone 15" }
       it { expect(goods.first.model).to eq "15P 256" }
-      it { expect(goods.first.cost).to eq 131000 }
+      it { expect(goods.first.cost).to eq 131_000 }
+    end
+
+    context do
+      let(:lines) do
+        <<~LINES
+                                      💥Apple💥
+
+          Pencil 2-10500
+        LINES
+      end
+
+      it { expect(goods.entries.size).to eq 1 }
+      it { expect(goods.first.device).to eq "Apple" }
+      it { expect(goods.first.model).to eq "Pencil 2" }
+      it { expect(goods.first.cost).to eq 10_500 }
     end
   end
 end
