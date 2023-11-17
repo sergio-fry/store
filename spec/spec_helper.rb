@@ -1,6 +1,8 @@
 require "pathname"
 require "active_support/core_ext/module/delegation"
 require "debug"
+require "dotenv"
+Dotenv.load(".env.test.local", ".env.local", ".env.test", ".env")
 
 class RootPath
   def pathname
@@ -85,4 +87,13 @@ RSpec.configure do |config|
   # test failures related to randomization by passing the same `--seed` value
   # as the one that triggered the failure.
   Kernel.srand config.seed
+
+  config.when_first_matching_example_defined http_logging: true do
+    require "net/http"
+    require "httplog"
+
+    HttpLog.configure do |c|
+      c.logger = Logger.new($stdout)
+    end
+  end
 end

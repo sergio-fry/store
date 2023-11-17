@@ -109,6 +109,9 @@ GEM
     erubi (1.12.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    httplog (1.6.2)
+      rack (>= 2.0)
+      rainbow (>= 2.0.0)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     importmap-rails (1.2.3)
@@ -307,6 +310,7 @@ DEPENDENCIES
   capybara
   debug
   dotenv-rails (~> 2.8)
+  httplog
   importmap-rails
   jbuilder
   puma (>= 5.0)

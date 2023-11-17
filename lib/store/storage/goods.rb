@@ -34,23 +34,33 @@ module Store
 
         }
 
-        if found[:Id].nil?
+        if found.nil?
           @noco.post(
             :products, attrs
           )
         else
           @noco.patch(
-            "products/#{found[:Id]}",
+            "products/#{found.id}",
             attrs
           )
         end
       end
 
-      def find(_device, model)
-        @noco.get(
+      def find(device, model)
+        data = @noco.get(
           "products/find-one", {
-            where: "(model,eq,#{model})"
+            fields: %w[Id model device cost].join(","),
+            where: "(device,eq,#{device})~and(model,eq,#{model})"
           }
+        )
+
+        return if data[:Id].nil?
+
+        Good.new(
+          id: data[:Id],
+          model: data[:model],
+          device: data[:device],
+          cost: data[:cost].to_i
         )
       end
     end
