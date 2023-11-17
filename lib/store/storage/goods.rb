@@ -19,13 +19,37 @@ module Store
         @noco = noco
       end
 
+      def delete_all = @noco.bulk_delete("products/all", {})
+      def update_all(attrs) = @noco.bulk_patch("products/all", attrs)
+
       def save(good)
-        @noco.post(
-          :products, {
-            "Title": "#{good.device} #{good.model}",
-            "model": good.model,
-            "cost": good.cost,
-            "device": good.device
+        found = find(good.device, good.model)
+
+        attrs = {
+          Title: "#{good.device} #{good.model}",
+          model: good.model,
+          cost: good.cost,
+          device: good.device,
+          in_stock: true
+
+        }
+
+        if found[:Id].nil?
+          @noco.post(
+            :products, attrs
+          )
+        else
+          @noco.patch(
+            "products/#{found[:Id]}",
+            attrs
+          )
+        end
+      end
+
+      def find(_device, model)
+        @noco.get(
+          "products/find-one", {
+            where: "(model,eq,#{model})"
           }
         )
       end
