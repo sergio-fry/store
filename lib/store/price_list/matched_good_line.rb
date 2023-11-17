@@ -7,14 +7,19 @@ module Store
 
       def matched? = !!match
 
-      def model = match[:model] rescue nil
-      def cost = match[:cost] rescue nil
-      def color = match[:color] rescue nil
+      def model = clean(match[:model]) rescue nil
+      def cost = clean(match[:cost]) rescue nil
+      def color = parsed_color(match[:color]) rescue nil
 
       def match
-        @line.match(/(?<model>.+)(?<color>[^#{known_colors.join}]).*-+(?<cost>\d+)/u) || 
-          @line.match(/(?<model>.+)-+(?<cost>\d+)/)
+        @match ||= @line.match(regexp1) || @line.match(regexp2)
       end
+
+      def regexp1 = /(?<model>.+)(?<color>[#{known_colors.join}]).*-+(?<cost>\d+)/u
+      def regexp2 = /(?<model>.+)-+(?<cost>\d+)/u
+
+
+      def clean(text) = text.gsub(/[^[:alnum:]\s()\-]/, "").strip
 
       COLOR_EMOJI = {
         127_765 => "yellow_moon",
@@ -46,6 +51,8 @@ module Store
       end
 
       def known_colors = COLOR_EMOJI.keys.map { |ch| ch.chr(Encoding::UTF_8) }
+
+      def utf_escaped(chars) = chars.map { |ch| "\\u{#{ch.ord}}" }.join
     end
   end
 end

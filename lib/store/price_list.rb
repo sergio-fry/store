@@ -20,19 +20,17 @@ module Store
 
         good_match = MatchedGoodLine.new(line)
 
-        next if good_match.matched?
+        next unless good_match.matched?
 
         yield Good.new(
-          device: remove_garbage((section || "")),
-          model: remove_garbage(good_match.model),
+          device: clean((section || "")),
+          model: good_match.model,
           color: good_match.color,
-          cost: good_match.cost.strip.to_i
+          cost: good_match.cost.to_i
         )
       end
     end
 
-    def remove_garbage(text)
-      text.gsub(/[^[:alnum:]\s()]/, "").strip
-    end
+    def clean(text) = text.gsub(/[^[:alnum:]\s()]/, "").strip
   end
 end
