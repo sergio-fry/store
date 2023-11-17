@@ -17,6 +17,7 @@ module Store
       it { expect(goods.first.device).to eq "Apple Technology" }
       it { expect(goods.first.model).to eq "SE 3 128" }
       it { expect(goods.first.cost).to eq 40_500 }
+      it { expect(goods.first.color).to eq "white" }
     end
 
     context do

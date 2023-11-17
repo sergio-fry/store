@@ -21,8 +21,8 @@ module Store
         end
       end
 
-      let(:new_good) { Good.new(model: "13", device: "iphone", cost: 100) }
-      let(:found) { goods.find("iphone", "13") }
+      let(:new_good) { Good.new(model: "13", device: "iphone", cost: 100, color: "black") }
+      let(:found) { goods.find("iphone", "13", "black") }
 
       before { goods.save(new_good) }
 

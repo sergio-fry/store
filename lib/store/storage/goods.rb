@@ -23,12 +23,13 @@ module Store
       def update_all(attrs) = @noco.bulk_patch("products/all", attrs)
 
       def save(good)
-        found = find(good.device, good.model)
+        found = find(good.device, good.model, good.color)
 
         attrs = {
           Title: "#{good.device} #{good.model}",
           model: good.model,
           cost: good.cost,
+          color: good.color,
           device: good.device,
           in_stock: true
 
@@ -46,11 +47,11 @@ module Store
         end
       end
 
-      def find(device, model)
+      def find(device, model, color)
         data = @noco.get(
           "products/find-one", {
             fields: %w[Id model device cost].join(","),
-            where: "(device,eq,#{device})~and(model,eq,#{model})"
+            where: "(device,eq,#{device})~and(model,eq,#{model})~and(color,eq,#{color})"
           }
         )
 
@@ -60,7 +61,8 @@ module Store
           id: data[:Id],
           model: data[:model],
           device: data[:device],
-          cost: data[:cost].to_i
+          cost: data[:cost].to_i,
+          color: data[:color]
         )
       end
     end
