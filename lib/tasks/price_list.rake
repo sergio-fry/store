@@ -27,7 +27,7 @@ namespace :price_list do
 
       Store::PriceList.new(
         File.open(Rails.root.join("tmp/price.txt")).read.lines
-      ).uniq { |good| [good.device, good.model] }.take(20).each do |good|
+      ).uniq { |good| [good.device, good.model] }.each do |good|
         goods.save(good)
       end
     end
