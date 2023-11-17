@@ -17,8 +17,8 @@ module Store
         section_match = line.match(%r{\s\s\s+[^[:alnum:]]+([[:alnum:]/\s]+)})
         section = section_match[1] if section_match
 
-        good_match1 = line.match(%r{([[:alnum:]/\s]+)([^[:alnum:]\s\)])-+(\d+)})
-        good_match2 = line.match(%r{([[:alnum:]/\s\(\)\-]+)-+(\d+)})
+        good_match1 = line.match(%r{(.+)([^[:alnum:]\s\)])-+(\d+)})
+        good_match2 = line.match(%r{(.+)-+(\d+)})
 
         good_match = if good_match1
                        {
@@ -37,8 +37,8 @@ module Store
 
         puts line
         yield Good.new(
-          device: (section || "").strip,
-          model: good_match[:model].strip,
+          device: remove_garbage((section || "")),
+          model: remove_garbage(good_match[:model]),
           color: parsed_color(good_match[:color]),
           cost: good_match[:cost].strip.to_i
         )
@@ -55,6 +55,7 @@ module Store
       128_993 => "yellow",
       128_994 => "green",
       128_995 => "violet",
+      127800 => "pink",
       9898 => "white",
       9899 => "black"
     }
@@ -71,6 +72,10 @@ module Store
 
         color
       end
+    end
+
+    def remove_garbage(text)
+      text.gsub(/[^[:alnum:]\s\(\)]/, "").strip
     end
   end
 end
