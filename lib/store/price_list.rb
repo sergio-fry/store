@@ -45,16 +45,17 @@ module Store
     end
 
     COLOR_EMOJI = {
-      9899 => "black",
-      9898 => "white",
-      128_308 => "red",
-      128_994 => "green",
-      128_993 => "yellow",
-      128_995 => "violet",
-      128_309 => "blue",
       127_765 => "yellow_moon",
       128_158 => "pink",
-      128_992 => "orange"
+      128_280 => "grey",
+      128_308 => "red",
+      128_309 => "blue",
+      128_992 => "orange",
+      128_993 => "yellow",
+      128_994 => "green",
+      128_995 => "violet",
+      9898 => "white",
+      9899 => "black"
     }
 
     def parsed_color(text)

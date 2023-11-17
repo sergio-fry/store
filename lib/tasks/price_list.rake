@@ -26,13 +26,14 @@ namespace :price_list do
       )
 
       goods.delete_all
-      goods.update_all(in_stock: false)
 
       Store::PriceList.new(
         File.open(Rails.root.join("tmp/price.txt")).read.lines
-      ).uniq { |good| [good.device, good.model] }.each do |good|
+      ).take(10).each do |good|
         goods.save(good)
       end
+
+      goods.update_all({ in_stock: false }, condition: "(UpdatedAt,lt,today)")
     end
   end
 end

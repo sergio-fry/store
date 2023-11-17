@@ -20,49 +20,71 @@ module Store
       end
 
       def delete_all = @noco.bulk_delete("products/all", {})
-      def update_all(attrs) = @noco.bulk_patch("products/all", attrs)
+
+      def update_all(attrs, condition: nil)
+        @noco.bulk_patch("products/all", attrs, condition:)
+      end
 
       def save(good)
-        found = find(good.device, good.model, good.color)
-
-        attrs = {
-          Title: "#{good.device} #{good.model}",
-          model: good.model,
-          cost: good.cost,
-          color: good.color,
-          device: good.device,
-          in_stock: true
-
-        }
+        found = find_by(good.device, good.model, good.color)
 
         if found.nil?
           @noco.post(
-            :products, attrs
+            :products, attrs_from_record(good).merge(in_stock: true)
           )
         else
           @noco.patch(
             "products/#{found.id}",
-            attrs
+            changed_attrs(found, good).merge(in_stock: true)
           )
         end
       end
 
-      def find(device, model, color)
-        data = @noco.get(
+      def changed_attrs(old, current)
+        Hash[attrs_from_record(current).to_a -
+             attrs_from_record(old).to_a]
+      end
+
+      def attrs_from_record(record)
+        {
+          Title: "#{record.device} #{record.model}",
+          model: record.model,
+          cost: record.cost,
+          color: record.color,
+          device: record.device
+        }
+      end
+
+      def where_condition(attrs)
+        attrs.map do |name, value|
+          "(#{name},eq,#{value})"
+        end.join("~and")
+      end
+
+      def find(id)
+        object_from_attrs @noco.get(
+          "products/#{id}"
+        )
+      end
+
+      def find_by(device, model, color)
+        object_from_attrs @noco.get(
           "products/find-one", {
-            fields: %w[Id model device cost].join(","),
-            where: "(device,eq,#{device})~and(model,eq,#{model})~and(color,eq,#{color})"
+            where: color ? where_condition(device:, model:, color:) : where_condition(device:, model:)
           }
         )
+      end
 
-        return if data[:Id].nil?
+      def object_from_attrs(attrs)
+
+        return if attrs[:Id].nil?
 
         Good.new(
-          id: data[:Id],
-          model: data[:model],
-          device: data[:device],
-          cost: data[:cost].to_i,
-          color: data[:color]
+          id: attrs[:Id],
+          model: attrs[:model],
+          device: attrs[:device],
+          cost: attrs[:cost].to_i,
+          color: attrs[:color]
         )
       end
     end

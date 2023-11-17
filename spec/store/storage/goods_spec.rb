@@ -4,7 +4,7 @@ require "store/good"
 
 module Store
   module Storage
-    RSpec.describe Goods, skip: "debug only" do
+    RSpec.describe Goods, skip: true do
       attr_reader :goods
 
       around do |example|
@@ -21,13 +21,31 @@ module Store
         end
       end
 
-      let(:new_good) { Good.new(model: "13", device: "iphone", cost: 100, color: "black") }
-      let(:found) { goods.find("iphone", "13", "black") }
+      describe "good save" do
+        let(:new_good) { Good.new(model: "13", device: "iphone", cost: 100, color: "black") }
+        let(:found) { goods.find_by("iphone", "13", "black") }
 
-      before { goods.save(new_good) }
+        before { goods.save(new_good) }
 
-      it { expect(found.device).to eq "iphone" }
-      it { expect(found.model).to eq "13" }
+        it { expect(found.device).to eq "iphone" }
+        it { expect(found.model).to eq "13" }
+      end
+
+      describe "update_all" do
+        let(:new_good) { Good.new(model: "13", device: "iphone", cost: 100, color: "black") }
+
+        attr_reader :id
+
+        before { @id = goods.save(new_good)[:Id] }
+
+        def found
+          goods.find(id)
+        end
+
+        example do
+          goods.update_all({ in_stock: false }, condition: "(UpdatedAt,lt,today)")
+        end
+      end
     end
   end
 end

@@ -30,10 +30,10 @@ module Store
         )
       end
 
-      def bulk_patch(path, data)
+      def bulk_patch(path, data, condition: nil)
         request(
           :patch,
-          "/api/v1/db/data/bulk/v1/#{@db}/#{path}",
+          path_with_query("/api/v1/db/data/bulk/v1/#{@db}/#{path}", where: condition),
           data
         )
       end
