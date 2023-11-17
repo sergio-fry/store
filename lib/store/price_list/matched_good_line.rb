@@ -7,13 +7,13 @@ module Store
 
       def matched? = !!match
 
-      def model = clean(match[:model]) rescue nil
-      def cost = clean(match[:cost]) rescue nil
-      def color = parsed_color(match[:color]) rescue nil
+      def model = clean(match[:model])
+      def cost = clean(match[:cost])
+      def color = match1 ? parsed_color(match1[:color]) : nil
 
-      def match
-        @match ||= @line.match(regexp1) || @line.match(regexp2)
-      end
+      def match = match1 || match2
+      def match1 = @match1 ||= @line.match(regexp1)
+      def match2 = @match2 ||= @line.match(regexp2)
 
       def regexp1 = /(?<model>.+)(?<color>[#{known_colors.join}]).*-+(?<cost>\d+)/u
       def regexp2 = /(?<model>.+)-+(?<cost>\d+)/u
