@@ -1,5 +1,6 @@
 require "pathname"
 require "active_support/core_ext/module/delegation"
+require "debug"
 
 class RootPath
   def pathname

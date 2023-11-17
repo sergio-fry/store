@@ -15,7 +15,11 @@ module Store
         next if line.strip.empty?
 
         section_match = line.match(%r{\s\s\s+[^[:alnum:]]+([[:alnum:]/\s]+)})
-        good_match = line.match(%r{([[:alnum:]/\s]+)[^[:alnum:]]+(\d+)})
+
+        good_match1 = line.match(%r{([[:alnum:]/\s]+)[^[:alnum:]]-+(\d+)})
+        good_match2 = line.match(%r{([[:alnum:]/\s]+)\s[^\s]+-+(\d+)})
+
+        good_match = good_match1 || good_match2
 
         section = section_match[1] if section_match
 
