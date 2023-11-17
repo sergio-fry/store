@@ -52,5 +52,13 @@ module Store
       it { expect(goods.first.color).to be_nil }
       it { expect(goods.first.cost).to eq 1000 }
     end
+
+    context do
+      let(:lines) { "AppleWatch USB-C (AAA)-700" }
+
+      it { expect(goods.first.model).to eq "AppleWatch USB-C (AAA)" }
+      it { expect(goods.first.color).to be_nil }
+      it { expect(goods.first.cost).to eq 700 }
+    end
   end
 end

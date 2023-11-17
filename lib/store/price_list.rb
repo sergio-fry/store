@@ -17,8 +17,8 @@ module Store
         section_match = line.match(%r{\s\s\s+[^[:alnum:]]+([[:alnum:]/\s]+)})
         section = section_match[1] if section_match
 
-        good_match1 = line.match(%r{([[:alnum:]/\s]+)([^[:alnum:]\s])-+(\d+)})
-        good_match2 = line.match(%r{([[:alnum:]/\s]+)-+(\d+)})
+        good_match1 = line.match(%r{([[:alnum:]/\s]+)([^[:alnum:]\s\)])-+(\d+)})
+        good_match2 = line.match(%r{([[:alnum:]/\s\(\)\-]+)-+(\d+)})
 
         good_match = if good_match1
                        {
