@@ -25,7 +25,7 @@ namespace :price_list do
         noco:
       )
 
-      goods.delete_all
+      #goods.delete_all
 
       # TODO: change on stock when missing only
       goods.update_all({ in_stock: false })
