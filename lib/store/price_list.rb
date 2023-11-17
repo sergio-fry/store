@@ -15,23 +15,31 @@ module Store
         next if line.strip.empty?
 
         section_match = line.match(%r{\s\s\s+[^[:alnum:]]+([[:alnum:]/\s]+)})
-
-        good_match1 = line.match(%r{([[:alnum:]/\s]+)([^[:alpha:]])-+(\d+)})
-        good_match2 = line.match(%r{([[:alnum:]/\s]+)\s([^\sa-zA-Z0-9]+)-+(\d+)})
-
-        good_match = good_match1 || good_match2
-
         section = section_match[1] if section_match
+
+        good_match1 = line.match(%r{([[:alnum:]/\s]+)([^[:alnum:]])-+(\d+)})
+        good_match2 = line.match(%r{([[:alnum:]/\s]+)-+(\d+)})
+
+        good_match = if good_match1
+                       {
+                         model: good_match1[1],
+                         color: good_match1[2],
+                         cost: good_match1[3]
+                       }
+                     elsif good_match2
+                       {
+                         model: good_match2[1],
+                         cost: good_match2[2]
+                       }
+                     end
 
         next if good_match.nil?
 
-        puts good_match[0]
-
         yield Good.new(
           device: section.strip,
-          model: good_match[1].strip,
-          color: parsed_color(good_match[2]),
-          cost: good_match[3].strip.to_i
+          model: good_match[:model].strip,
+          color: parsed_color(good_match[:color]),
+          cost: good_match[:cost].strip.to_i
         )
       end
     end
@@ -44,12 +52,14 @@ module Store
       128_993 => "yellow",
       128_995 => "violet",
       128_309 => "blue",
-      127765 => "yellow_moon",
-      128158 => "pink", 
-      128992 => "orange"
+      127_765 => "yellow_moon",
+      128_158 => "pink",
+      128_992 => "orange"
     }
 
     def parsed_color(text)
+      return if text.nil?
+
       if text.size > 1
         text
       else
