@@ -36,6 +36,7 @@ module Store
         next if good_match.nil?
 
         puts line
+        debugger
         yield Good.new(
           device: remove_garbage((section || "")),
           model: remove_garbage(good_match[:model]),

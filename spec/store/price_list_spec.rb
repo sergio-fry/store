@@ -64,8 +64,8 @@ module Store
     context do
       let(:lines) { "🔶💦 Ulefone Armor 17 Pro (8/256) 📸-108mPx (iP68/iP69K)⚫  ⚫️ -22000" }
 
-      it { expect(goods.first.model).to eq "AppleWatch USB-C (AAA)" }
       it { expect(goods.first.color).to eq "black" }
+      it { expect(goods.first.model).to eq "AppleWatch USB-C (AAA)" }
       it { expect(goods.first.cost).to eq 220_000 }
     end
   end
