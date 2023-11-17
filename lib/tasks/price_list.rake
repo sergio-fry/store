@@ -27,13 +27,17 @@ namespace :price_list do
 
       goods.delete_all
 
+      # TODO: change on stock when missing only
+      goods.update_all({ in_stock: false })
+
       Store::PriceList.new(
         File.open(Rails.root.join("tmp/price.txt")).read.lines
-      ).take(10).each do |good|
+      ).each do |good|
+        good.in_stock = true
         goods.save(good)
       end
 
-      goods.update_all({ in_stock: false }, condition: "(UpdatedAt,lt,today)")
+      # goods.update_all({ in_stock: false }, condition: "(UpdatedAt,lt,today)")
     end
   end
 end

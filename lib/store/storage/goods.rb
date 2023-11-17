@@ -30,12 +30,14 @@ module Store
 
         if found.nil?
           @noco.post(
-            :products, attrs_from_record(good).merge(in_stock: true)
+            :products, attrs_from_record(good)
           )
         else
+          return if changed_attrs(found, good).empty?
+
           @noco.patch(
             "products/#{found.id}",
-            changed_attrs(found, good).merge(in_stock: true)
+            changed_attrs(found, good)
           )
         end
       end
@@ -51,7 +53,8 @@ module Store
           model: record.model,
           cost: record.cost,
           color: record.color,
-          device: record.device
+          device: record.device,
+          in_stock: record.in_stock
         }
       end
 
@@ -76,7 +79,6 @@ module Store
       end
 
       def object_from_attrs(attrs)
-
         return if attrs[:Id].nil?
 
         Good.new(
@@ -84,7 +86,8 @@ module Store
           model: attrs[:model],
           device: attrs[:device],
           cost: attrs[:cost].to_i,
-          color: attrs[:color]
+          color: attrs[:color],
+          in_stock: attrs[:in_stock]
         )
       end
     end
