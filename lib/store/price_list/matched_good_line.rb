@@ -19,7 +19,7 @@ module Store
       def regexp2 = /(?<model>.+)-+(?<cost>\d+)/u
 
 
-      def clean(text) = text.gsub(/[^[:alnum:]\s()\-]/, "").strip
+      def clean(text) = text.gsub(/[^[:alnum:]\s()\-\/]/, "").strip
 
       COLOR_EMOJI = {
         127_765 => "yellow_moon",

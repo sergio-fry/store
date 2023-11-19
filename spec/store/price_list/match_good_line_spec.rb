@@ -10,6 +10,7 @@ module Store
       it { expect(line("iphone -100").cost).to eq "100" }
       it { expect(line("AppleWatch USB-C (AAA)-100").cost).to eq "100" }
       it { expect(line("AppleWatch USB-C (AAA)-100").model).to eq "AppleWatch USB-C (AAA)" }
+      it { expect(line("note 12 8/128Gb -1000").model).to eq "note 12 8/128Gb" }
 
       it {
         expect(
