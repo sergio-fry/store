@@ -82,9 +82,10 @@ module Store
       end
 
       let(:last) { goods.entries.last }
+
       it { expect(last.device).to eq "" }
       it { expect(last.model).to eq "Pixel 6 (8/128)" }
-      it { expect(last.cost).to eq 36500 }
+      it { expect(last.cost).to eq 36_500 }
     end
   end
 end
