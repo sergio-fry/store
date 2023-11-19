@@ -10,20 +10,29 @@ module Store
     end
 
     def each
-      section = nil
+      section = ""
+      lines_without_section = 0
 
       @lines.each do |line|
-        next if line.strip.empty?
-
-        section_match = line.match(%r{\s\s\s+[^[:alnum:]]+([[:alnum:]/\s]+)})
-        section = section_match[1] if section_match
-
         good_match = MatchedGoodLine.new(line)
+
+        unless good_match.matched?
+          section_match = line.match(%r{\s\s\s+[^[:alnum:]]+([[:alnum:]/\s]+)})
+
+          if section_match
+            lines_without_section = 0
+            section = clean(section_match[1] || "")
+          else
+            lines_without_section += 1
+          end
+        end
+
+        section = "" if lines_without_section > 1
 
         next unless good_match.matched?
 
         yield Good.new(
-          device: clean((section || "")),
+          device: section,
           model: good_match.model,
           color: good_match.color,
           cost: good_match.cost.to_i
