@@ -52,5 +52,39 @@ module Store
       it { expect(goods.first.color).to be_nil }
       it { expect(goods.first.cost).to eq 1000 }
     end
+
+    context do
+      let(:lines) do
+        <<~LINES
+             ♻️♻️  *OnePlus* ♻️♻️
+
+          ♻️ *OnePlus Nord CE 3 Lite 8/128 ⚫️🟢-23000*🇪🇺
+          ♻️ *OnePlus Nord CE 3 Lite 8/256 🟢-25500*🇪🇺
+
+          ♻️ *OnePlus Nord N20 SE (4/128)⚫️🟢-12500*🇷🇺
+
+          ♻️ *OnePlus Ace 10R  (8/256)🔵-30000*🇭🇰
+          ♻️ *OnePlus Ace 10R (12/256)⚫️🔵-30500*🇭🇰
+          ♻️ *OnePlus Ace 10R (12/512)⚫️-32000*🇭🇰
+
+          ♻️ *OnePlus Ace Pro 10T (8/128)⚫️-32000*🇭🇰
+
+          ♻️ *OnePlus Ace Pro 10T (16/256)⚫️🟢-36200*🇭🇰
+
+          ♻️ *OnePlus 11R (12/256)🔵-42000*🇭🇰
+
+          ♻️ *OnePlus 11 (16/256)🟢⚫️-65000*🇪🇺
+
+          🚩🚩🚩🚩🚩🚩🚩🚩
+
+          🌀 *Pixel 6 (8/128) ⚫️🟠-36500*
+        LINES
+      end
+
+      let(:last) { goods.entries.last }
+      xit { expect(last.device).to eq "" }
+      it { expect(last.model).to eq "Pixel 6 (8/128)" }
+      it { expect(last.cost).to eq 36500 }
+    end
   end
 end
