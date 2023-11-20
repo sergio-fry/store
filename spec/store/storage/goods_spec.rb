@@ -4,7 +4,7 @@ require "store/good"
 
 module Store
   module Storage
-    RSpec.describe Goods, skip: true do
+    RSpec.describe Goods, skip: true, http_logging: true do
       attr_reader :goods
 
       around do |example|

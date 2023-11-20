@@ -33,7 +33,7 @@ module Store
             :products, attrs_from_record(good)
           )
         else
-          return if changed_attrs(found, good).empty?
+          return attrs_from_record(found) if changed_attrs(found, good).empty?
 
           @noco.patch(
             "products/#{found.id}",

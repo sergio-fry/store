@@ -51,7 +51,7 @@ module Store
           "GET",
           path_with_query("/api/v1/db/data/v1/#{@db}/#{path}", data),
           "",
-          headers.slice("xc-auth")
+          headers.slice("xc-token")
         )
 
         case resp
@@ -97,7 +97,7 @@ module Store
         {
           "accept" => "application/json",
           "Content-Type" => "application/json",
-          "xc-auth" => @auth
+          "xc-token" => @auth
         }
       end
     end
